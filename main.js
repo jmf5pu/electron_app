@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const isDev = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
@@ -51,3 +51,10 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+
+ipcMain.on('synchronous-message', (event, data) => {
+  console.log(data);
+  // send message to renderer.js
+  event.sender.send('synchronous-reply', 'hello');
+});
